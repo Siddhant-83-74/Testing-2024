@@ -15,7 +15,7 @@ volatile float rpm_rt[4] = { 0, 0, 0, 0 };
 int res = pow(2, 14) - 1;
 int duty_cycle = 25;                            //in percentage
 int max_pwm = (int)(duty_cycle / 100.0 * res);  //6v--250rpm
-int max_rpm = 250*2;
+int max_rpm = 250*2;//hello.....
 
 //int res=pow(2,14)-1;
 //int duty_cycle=25;//in percentage
