@@ -112,10 +112,11 @@ void ps4_input() {
 
     int y = psAxis[1] - 128;
     int x= psAxis[0] - 128;
-    rpm_sp[0] = map(+x+y,-255,255,max_rpm,-max_rpm);
-    rpm_sp[1] = map(+x-y,-255,255,max_rpm,-max_rpm);
-    rpm_sp[2] = map(-x-y,-255,255,max_rpm,-max_rpm);
-    rpm_sp[3] = map(-x+y,-255,255,max_rpm,-max_rpm);
+    int w= psAxis[2]-128;
+    rpm_sp[0] = map(+x+y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[1] = map(+x-y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[2] = map(-x-y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[3] = map(-x+y+w,-255,255,max_rpm,-max_rpm);
     //Serial.printf("time: %d\n ",millis());
     for(int i=0;i<4;i++)
     Serial.printf("RPM_%d_input:%0.2f  ",i+1, rpm_sp[i]);
@@ -157,22 +158,22 @@ int lastTime = 0;
 int ind=-1;
 void loop() {
 
-  // if (millis() - lastTime > 1000) {
-  //   noInterrupts();
-  //   if (Serial.available() > 0) {
-  //     String input = Serial.readString();//1,030.000,145.000,000.500
-  //     Serial.println(input.length());
-  //     if (input.length() <= 100) {
-  //       ind=(input.substring(0, 1)).toInt()-1;
-  //       kp[ind] = (input.substring(2, 9)).toFloat();
-  //       ki[ind] = (input.substring(10, 17)).toFloat();
-  //       kd[ind] = (input.substring(18, 25)).toFloat();
-  //       Serial.printf("%d   %f %f %f\n", ind,kp[ind], ki[ind], kd[ind]);
-  //     }
-  //   } 
-  //     interrupts();
-  //   lastTime = millis();
-  // }
+   if (millis() - lastTime > 1000) {
+     noInterrupts();
+     if (Serial.available() > 0) {
+       String input = Serial.readString();//1,030.000,145.000,000.500
+       Serial.println(input.length());
+       if (input.length() <= 100) {
+         ind=(input.substring(0, 1)).toInt()-1;
+         kp[ind] = (input.substring(2, 9)).toFloat();
+         ki[ind] = (input.substring(10, 17)).toFloat();
+         kd[ind] = (input.substring(18, 25)).toFloat();
+         Serial.printf("%d   %f %f %f\n", ind,kp[ind], ki[ind], kd[ind]);
+       }
+     } 
+       interrupts();
+     lastTime = millis();
+   }
 
 
   //ps4_input();

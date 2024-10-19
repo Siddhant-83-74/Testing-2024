@@ -74,8 +74,8 @@ void drive(int pwm_val, int pwmPin, int dirPin)
     pwm_val = -255;
 
   digitalWrite(dirPin, (pwm_val <= 0 ? LOW : HIGH));
-  Serial.printf("Dir: %d\n", (pwm_val <= 0 ? LOW : HIGH));
-  Serial.printf("PWM: %d\n", abs(pwm_val));
+//  Serial.printf("Dir: %d\n", (pwm_val <= 0 ? LOW : HIGH));
+//  Serial.printf("PWM: %d\n", abs(pwm_val));
   analogWrite(pwmPin, abs(pwm_val));
 }
 
@@ -94,6 +94,7 @@ void inverse_kine(int x, int y, int w, int z)
   }
   else
   s1=s2=s3=s4=0;
+  
   Serial.printf("s1: %d  s2: %d  s3:%d  s4:%d\n", s1, s2, s3, s4);
   drive(s1, m1_pwm, m1_dir);
   drive(s2, m2_pwm, m2_dir);
@@ -212,11 +213,11 @@ void loop()
     Serial.printf("LX: %d, LY: %d, RX: %d, RY: %d \r\n", left_x, left_y, right_x, right_y);
     Serial.printf("L-Trig: %d, R-Trig: %d\r\n", pwm_l, pwm_r);
 
-    //inverse_kine(x, y, w, z);
-  drive(s1, m1_pwm, m1_dir);
-  drive(s2, m2_pwm, m2_dir);
-  drive(s3, m3_pwm, m3_dir);
-  drive(s4, m4_pwm, m4_dir);
+    inverse_kine(x, y, w, z);
+//  drive(s1, m1_pwm, m1_dir);
+//  drive(s2, m2_pwm, m2_dir);
+//  drive(s3, m3_pwm, m3_dir);
+//  drive(s4, m4_pwm, m4_dir);
 
 
 
