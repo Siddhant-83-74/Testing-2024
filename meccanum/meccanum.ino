@@ -47,17 +47,17 @@ int psAxis_prev[64];
 bool first_joystick_message = true;
 uint8_t last_bdaddr[6] = {0, 0, 0, 0, 0, 0};
 
-int m1_pwm = 1;
-int m1_dir = 0;
+int m1_pwm = 3;
+int m1_dir = 2;
 
-int m2_pwm = 3;
-int m2_dir = 2;
+int m2_pwm = 1;
+int m2_dir = 0;
 
-int m3_pwm = 5;
-int m3_dir = 4;
+int m3_pwm = 7;
+int m3_dir = 6;
 
-int m4_pwm = 7;
-int m4_dir = 6;
+int m4_pwm = 5;
+int m4_dir = 4;
 
 int res=pow(2,14)-1;
 int duty_cycle=25;//in percentage
