@@ -189,7 +189,7 @@ void loop()
     }
 
     for (uint8_t i = 0; i < 64; i++) {
-      psAxis_prev[i] = psAxis[i];
+      psAxis_prev[i] = psAxis[i];xs
       psAxis[i] = joystick1.getAxis(i);
     }
 
