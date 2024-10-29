@@ -4,13 +4,13 @@ IntervalTimer rpm_timer;
 IntervalTimer ps4_timer;
 IntervalTimer pid_timer;
 
-int pwm_pin[4] = { 3, 1, 7, 5 };
-int dir_pin[4] = { 2, 0, 6, 4 };
+int pwm_pin[3] = { 3, 1, 7};
+int dir_pin[3] = { 2, 0, 6 };
 
 
-Encoder m[4] = { Encoder(9, 8), Encoder(12, 11), Encoder(25, 24), Encoder(28, 27) };
+Encoder m[3] = { Encoder(9, 8), Encoder(12, 11), Encoder(25, 24) };
 
-volatile float rpm_rt[4] = { 0, 0, 0, 0 };
+volatile float rpm_rt[3] = { 0, 0, 0 };
 
 int res = pow(2, 14) - 1;
 int duty_cycle = 25;                            //in percentage
@@ -51,7 +51,7 @@ void setup() {
   if (CrashReport) Serial.print(CrashReport);
   myusb.begin();
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 3; i++) {
     analogWriteFrequency(pwm_pin[i], 9000);
     pinMode(dir_pin[i], OUTPUT);
   }
@@ -78,14 +78,14 @@ void setup() {
   //  Serial.println("move");
   //  analogWrite(m4_dir,res);
 }
-volatile long oldPosition[4] = { 0, 0, 0, 0 };
+volatile long oldPosition[3] = { 0, 0, 0};
 int ledState = LOW;
-volatile unsigned long count[4] = { -999, -999, -999, -999 };  // use volatile for shared variables
-volatile long newPosition[4] = { 0, 0, 0, 0 };
+volatile unsigned long count[3] = { -999, -999, -999 };  // use volatile for shared variables
+volatile long newPosition[3] = { 0, 0, 0};
 
 
 void calc_rpm() {
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 3; i++) {
     newPosition[i] = m[i].read();
     count[i] = abs(newPosition[i] - oldPosition[i]);
     // count=newPosition<oldPosition?-count:count;
@@ -98,8 +98,8 @@ void calc_rpm() {
   }
   Serial.printf("\n");
 }
-volatile int pwm_pid[] = {0,0,0,0};
-volatile float rpm_sp[] = {0,0,0,0};
+volatile int pwm_pid[] = {0,0,0};
+volatile float rpm_sp[] = {0,0,0};
 void ps4_input() {
   myusb.Task();
   if (joystick1.available()) {
@@ -109,27 +109,32 @@ void ps4_input() {
     }
 
     buttons = joystick1.getButtons();
+/*
+ s1=int(1*x)
+         s2=int(-0.508*x-0.88*y)
+         s3=int(-0.5045*x+0.8725*y)
 
+*/
     int y = psAxis[1] - 128;
     int x= -1*(psAxis[0] - 128);
     int w= psAxis[2]-128;
-    rpm_sp[0] = map(-x-y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[1] = map(-x+y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[2] = map(x+y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[3] = map(x-y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[0] = map(x+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[1] = map(-5*x-0.866*y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[2] = map(-5*x+0.866*y+w,-255,255,max_rpm,-max_rpm);
+   // rpm_sp[3] = map(x-y+w,-255,255,max_rpm,-max_rpm);
     //Serial.printf("time: %d\n ",millis());
-    for(int i=0;i<4;i++)
+    for(int i=0;i<3;i++)
     Serial.printf("RPM_%d_input:%0.2f  ",i+1, rpm_sp[i]);
   }
 }
-volatile float kp[] = {09.0,09.0,09.0,09.0};
-volatile float ki[] = {165.0,165.0,165.0,165.0};
-volatile float kd[] = {00.50,00.50,00.50,00.50};
+volatile float kp[] = {09.0,09.0,09.0};
+volatile float ki[] = {165.0,165.0,165.0};
+volatile float kd[] = {00.50,00.50,00.50};
 
-float error[]={0,0,0,0};
-float eInt[]={0,0,0,0};
-float eDer[]={0,0,0,0}; 
-float lastError[]={0,0,0,0};
+float error[]={0,0,0};
+float eInt[]={0,0,0};
+float eDer[]={0,0,0}; 
+float lastError[]={0,0,0};
 //void input()
 //{
 //
@@ -137,7 +142,7 @@ float lastError[]={0,0,0,0};
 //  }
 void pid() {
   //Serial.println(rpm);
-  for(int i=0;i<4;i++){
+  for(int i=0;i<3;i++){
   error[i] = rpm_sp[i] - rpm_rt[i];
   eDer[i] = (error[i] - lastError[i]) / 0.075;
   eInt[i] = eInt[i] + error[i] * 0.075;

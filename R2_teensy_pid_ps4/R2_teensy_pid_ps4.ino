@@ -4,8 +4,8 @@ IntervalTimer rpm_timer;
 IntervalTimer ps4_timer;
 IntervalTimer pid_timer;
 
-int pwm_pin[4] = { 3, 1, 7, 5 };
-int dir_pin[4] = { 2, 0, 6, 4 };
+int pwm_pin[4] = { 2, 1, 7, 5 };
+int dir_pin[4] = { 3, 0, 6, 4 };
 
 
 Encoder m[4] = { Encoder(9, 8), Encoder(12, 11), Encoder(25, 24), Encoder(28, 27) };
@@ -113,10 +113,10 @@ void ps4_input() {
     int y = psAxis[1] - 128;
     int x= -1*(psAxis[0] - 128);
     int w= psAxis[2]-128;
-    rpm_sp[0] = map(-x-y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[1] = map(-x+y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[2] = map(x+y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[3] = map(x-y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[0] = map(-y-w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[1] = map(x-w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[2] = map(y-w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[3] = map(-x-w,-255,255,max_rpm,-max_rpm);
     //Serial.printf("time: %d\n ",millis());
     for(int i=0;i<4;i++)
     Serial.printf("RPM_%d_input:%0.2f  ",i+1, rpm_sp[i]);

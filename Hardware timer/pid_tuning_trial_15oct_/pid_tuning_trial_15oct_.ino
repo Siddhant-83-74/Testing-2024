@@ -7,9 +7,9 @@ IntervalTimer pid_timer;
 //IntervalTimer const_timer;
 
 //const int ledPin = LED_BUILTIN;  // the pin with a LED
- Encoder myEnc(9, 8);
- int m4_pwm = 3;
- int m4_dir = 2;
+//  Encoder myEnc(9, 8);
+//  int m4_pwm = 2;
+//  int m4_dir = 3;
 
 // Encoder myEnc(12, 11);
 // int m4_pwm = 1;
@@ -18,10 +18,10 @@ IntervalTimer pid_timer;
 // Encoder myEnc(25, 24);
 // int m4_pwm = 7;
 // int m4_dir = 6;
-xs
-//Encoder myEnc(28, 27);
-//int m4_pwm = 5;
-//int m4_dir = 4;
+
+Encoder myEnc(28, 27);
+int m4_pwm = 5;
+int m4_dir = 4;
 volatile float rpm_rt=0;
 
 int res=pow(2,14)-1;
