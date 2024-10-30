@@ -211,7 +211,7 @@ void loop()
 
     Serial.printf("LX: %d, LY: %d, RX: %d, RY: %d \r\n", left_x, left_y, right_x, right_y);
     Serial.printf("L-Trig: %d, R-Trig: %d\r\n", pwm_l, pwm_r);
-
+    Serial.printf("Button: %x",buttons);
     //inverse_kine(x, y, w, z);
   drive(s1, m1_pwm, m1_dir);
   drive(s2, m2_pwm, m2_dir);
