@@ -50,7 +50,7 @@ void loop()
   Serial.printf("X: %f",acc_x);
   Serial.printf("\tY: %f",acc_y);
   Serial.printf("\tZ: %f\n",acc_z);
-  Serial.printf("n");
+  //Serial.printf("");
   delay(100);
 
 

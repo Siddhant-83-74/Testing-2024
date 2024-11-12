@@ -8,7 +8,7 @@ int pwm_pin[4] = { 3, 1, 7, 5 };
 int dir_pin[4] = { 2, 0, 6, 4 };
 
 
-Encoder m[4] = { Encoder(9, 8), Encoder(12, 11), Encoder(25, 24), Encoder(28, 27) };
+Encoder m[4] = { Encoder(9, 8), Encoder(12, 11), Encoder(28, 27), Encoder(31, 30) };
 
 volatile float rpm_rt[4] = { 0, 0, 0, 0 };
 
