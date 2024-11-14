@@ -1,13 +1,18 @@
 #include <Encoder.h>
-Encoder enc(3,4);
+Encoder enc(20,21);
+Encoder enc2(22,23);
 
 void setup()
 {
-  Seria.begin(9600);
+  Serial.begin(2000000);
 }
 
 void loop()
 {
   int encoder_val=enc.read();
-  Serial.printf("Encoder value: %d ",encoder_val);
+  int encoder_val2=enc2.read();
+
+  Serial.printf("Encoder 1 value: %d    ",encoder_val);
+  Serial.printf("Encoder 2 value: %d \n",encoder_val2);
+
 }

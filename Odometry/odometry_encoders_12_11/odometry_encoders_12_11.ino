@@ -50,7 +50,7 @@ void setup() {
 
   Wire2.setClock(400000);
   Wire2.begin();
-  delay(250);
+  delay(250);s
 
   Wire2.beginTransmission(0x68);
   Wire2.write(0x6B);

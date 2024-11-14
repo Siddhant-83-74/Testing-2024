@@ -1,5 +1,9 @@
 #include "USBHost_t36.h"
 #include <Encoder.h>
+
+Encoder enc(20,21);
+Encoder enc2(22,23);
+
 IntervalTimer theTimer;
 
 
