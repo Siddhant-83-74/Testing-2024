@@ -2,13 +2,13 @@
 #include <Encoder.h>
 #include <Wire.h>
 
-const double PI = 3.141592653589793;
+const double PI_v = 3.14159;
 
 volatile float delta_angle=0,length=242.5,breadth=345;
 volatile float RateRoll, RatePitch, RateYaw;
 
-Encoder dead_wheelX(22,23);//182mm is 2450 counts
-Encoder dead_wheelY(20,21); 
+Encoder deadWheelX(22,23);//182mm is 2450 counts
+Encoder deadWheelY(20,21); 
 
 IntervalTimer thePidTimer;
 IntervalTimer theOdoTimer;
@@ -128,8 +128,8 @@ void pid() {
     rpm_sp[2] = map(x+y+w,-255,255,max_rpm,-max_rpm);
     rpm_sp[3] = map(x-y+w,-255,255,max_rpm,-max_rpm);
     //Serial.printf("time: %d\n ",millis());
-    for(int i=0;i<4;i++)
-    Serial.printf("RPM_%d_input:%0.2f  ",i+1, rpm_sp[i]);
+   // for(int i=0;i<4;i++)
+   // Serial.printf("RPM_%d_input:%0.2f  ",i+1, rpm_sp[i]);
   }
 
 
@@ -140,11 +140,11 @@ void pid() {
     rpm_rt[i] = count[i] / 1300.0 * 600 * 4 / 3;
     rpm_rt[i] *= newPosition[i] < oldPosition[i] ? -1 : 1;
 
-    Serial.printf("RPM_output(motor: %d):%0.2f ",i+1, rpm_rt[i]);
+    //Serial.printf("RPM_output(motor: %d):%0.2f ",i+1, rpm_rt[i]);
     count[i] = 0;
     oldPosition[i] = newPosition[i];
   }
-  Serial.printf("\n");
+  //Serial.printf("\n");
    for(int i=0;i<4;i++){
   error[i] = rpm_sp[i] - rpm_rt[i];
   eDer[i] = (error[i] - lastError[i]) / 0.075;
@@ -163,13 +163,15 @@ void odometry()
 {
 gyro_signals();
 delta_angle+=RateYaw*0.01;
-delat_angle*=-PI/180.0;
+delta_angle*=-PI_v/180.0;
 x_count=deadWheelX.read();
 y_count=deadWheelY.read();
 
 x_pos=-x_count/2450.0*182.0+length*delta_angle;
 y_pos=y_count/2450.0*182.0-breadth*delta_angle;
-Serial.printf("x_pos:%d")
+Serial.printf("delta_angle:%d.  ",delta_angle);
+Serial.printf("x_pos:%d   ",x_count);
+Serial.printf("y_pos:%d\n",y_count);
 }
 float rpmCopy = 0;
 int lastTime = 0;
