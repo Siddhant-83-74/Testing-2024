@@ -113,10 +113,10 @@ void ps4_input() {
     int y = psAxis[1] - 128;
     int x= -1*(psAxis[0] - 128);
     int w= psAxis[2]-128;
-    rpm_sp[0] = map(-x-y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[1] = map(-x+y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[2] = map(x+y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[3] = map(x-y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[0] = map(x-y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[1] = map(x+y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[2] = map(-x+y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[3] = map(-x-y+w,-255,255,max_rpm,-max_rpm);
     //Serial.printf("time: %d\n ",millis());
     for(int i=0;i<4;i++)
     Serial.printf("RPM_%d_input:%0.2f  ",i+1, rpm_sp[i]);
