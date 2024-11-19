@@ -8,14 +8,14 @@ int pwm_pin[3] = { 3, 1, 7};
 int dir_pin[3] = { 2, 0, 6 };
 
 
-Encoder m[3] = { Encoder(9, 8), Encoder(12, 11), Encoder(25, 24) };
+Encoder m[3] = { Encoder(9, 8), Encoder(12, 11), Encoder(28, 27) };
 
 volatile float rpm_rt[3] = { 0, 0, 0 };
 
 int res = pow(2, 14) - 1;
-int duty_cycle = 25;                            //in percentage
+int duty_cycle = 100;                            //in percentage
 int max_pwm = (int)(duty_cycle / 100.0 * res);  //6v--250rpm
-int max_rpm = 250*2;//hello.....
+int max_rpm = 600;//hello.....
 
 //int res=pow(2,14)-1;
 //int duty_cycle=25;//in percentage
@@ -116,11 +116,11 @@ void ps4_input() {
 
 */
     int y = psAxis[1] - 128;
-    int x= -1*(psAxis[0] - 128);
+    int x= (psAxis[0] - 128);
     int w= psAxis[2]-128;
-    rpm_sp[0] = map(x+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[1] = map(-5*x-0.866*y+w,-255,255,max_rpm,-max_rpm);
-    rpm_sp[2] = map(-5*x+0.866*y+w,-255,255,max_rpm,-max_rpm);
+    rpm_sp[0] = map(x+w,-175,175,max_rpm,-max_rpm);
+    rpm_sp[1] = map(-0.5*x-0.866*y+w,-175,175,max_rpm,-max_rpm);
+    rpm_sp[2] = map(-0.5*x+0.866*y+w,-175,175,max_rpm,-max_rpm);
    // rpm_sp[3] = map(x-y+w,-255,255,max_rpm,-max_rpm);
     //Serial.printf("time: %d\n ",millis());
     for(int i=0;i<3;i++)
