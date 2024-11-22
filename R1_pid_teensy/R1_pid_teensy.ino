@@ -5,7 +5,7 @@ IntervalTimer ps4_timer;
 IntervalTimer pid_timer;
 
 int pwm_pin[3] = { 3, 1, 7};
-int dir_pin[3] = { 2, 0, 6 };
+int dir_pin[3] = { 2, 0, 6};
 
 
 Encoder m[3] = { Encoder(9, 8), Encoder(12, 11), Encoder(28, 27) };
@@ -15,7 +15,7 @@ volatile float rpm_rt[3] = { 0, 0, 0 };
 int res = pow(2, 14) - 1;
 int duty_cycle = 100;                            //in percentage
 int max_pwm = (int)(duty_cycle / 100.0 * res);  //6v--250rpm
-int max_rpm = 600;//hello.....
+int max_rpm = 400;//hello.....
 
 //int res=pow(2,14)-1;
 //int duty_cycle=25;//in percentage
