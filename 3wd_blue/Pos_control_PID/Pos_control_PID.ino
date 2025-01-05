@@ -1,12 +1,12 @@
 #include <Encoder.h>
 
 IntervalTimer pid_timer;
-Encoder enc1(31,30);
+Encoder enc1(12,11);
 
-int m_pwm=5;
-int m_dir=4;
-float cpr=1300;
-float kp=0,ki=0,kd=0;
+int m_pwm=1;
+int m_dir=0;
+float cpr=17500;
+float kp=50,ki=1,kd=1;
 
 float ap=0.0;
 float sp_angle=0.0;
