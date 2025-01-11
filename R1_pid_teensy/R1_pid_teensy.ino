@@ -3,19 +3,20 @@
 IntervalTimer rpm_timer;
 IntervalTimer ps4_timer;
 IntervalTimer pid_timer;
+IntervalTimer pos_pid_timer;
 
-int pwm_pin[3] = { 3, 1, 7};
-int dir_pin[3] = { 2, 0, 6};
+int pwm_pin[3] = { 3, 5, 7};
+int dir_pin[3] = { 2, 4, 6};
 
 
-Encoder m[3] = { Encoder(9, 8), Encoder(12, 11), Encoder(28, 27) };
+Encoder m[3] = { Encoder(28, 27), Encoder(31, 30), Encoder(12, 11) };
 
 volatile float rpm_rt[3] = { 0, 0, 0 };
 
 int res = pow(2, 14) - 1;
 int duty_cycle = 100;                            //in percentage
 int max_pwm = (int)(duty_cycle / 100.0 * res);  //6v--250rpm
-int max_rpm = 400;//hello.....
+int max_rpm = 250;//hello.....
 
 //int res=pow(2,14)-1;
 //int duty_cycle=25;//in percentage
@@ -30,7 +31,7 @@ int max_rpm = 400;//hello.....
 
 USBHost myusb;
 JoystickController joystick1(myusb);
-BluetoothController bluet(myusb, true, "0000");
+BluetoothController bluet(myusb ,true, "0000");
 uint32_t buttons_prev = 0;
 uint32_t buttons;
 
@@ -64,6 +65,7 @@ void setup() {
   ps4_timer.priority(0);
   rpm_timer.priority(1);
   pid_timer.priority(2);
+  pos_pid_timer.priority(3);
   //const_timer.priority(3);
   ps4_timer.begin(ps4_input, 75000);
   rpm_timer.begin(calc_rpm, 75000);

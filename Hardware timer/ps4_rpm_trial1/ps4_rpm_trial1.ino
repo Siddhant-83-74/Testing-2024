@@ -3,10 +3,10 @@
 IntervalTimer rpm_timer;
 IntervalTimer ps4_timer;
 //const int ledPin = LED_BUILTIN;  // the pin with a LED
-Encoder myEnc(9, 8);
+Encoder myEnc(28, 27);
 
-int m4_pwm = 3;
-int m4_dir = 2;
+int m2_pwm = 3;
+int m2_dir = 2;
 volatile float rpm=0;
 
 int res=pow(2,14)-1;
@@ -35,8 +35,7 @@ int psAxis[64];
 int psAxis_prev[64];
 bool first_joystick_message = true;
 
-int m2_pwm = 3;
-int m2_dir = 2;
+
 
 
 void setup() {
@@ -61,7 +60,7 @@ void setup() {
   rpm_timer.begin(calc_rpm, 75000);// calcRpm() to run every 0.1 seconds....us
     analogWriteResolution(14);
 
-  analogWriteFrequency(m4_pwm, 9000);
+  //analogWriteFrequency(m4_pwm, 9000);
   
 //  analogWrite(m4_pwm,6000);
 //  Serial.println("move");
@@ -78,6 +77,7 @@ void calc_rpm() {
   newPosition=myEnc.read();
   count=abs(newPosition-oldPosition);
   rpm=count/1300.0*600*4/3;
+   rpm *= newPosition < oldPosition ? -1 : 1;
   Serial.printf("RPM: %f   ",rpm);
   count=0;
   oldPosition=newPosition;
