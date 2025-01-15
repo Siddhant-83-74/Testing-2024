@@ -12,8 +12,8 @@ IntervalTimer ps4_timer;
 // int m4_dir = 0;
 
 Encoder myEnc(28, 27);
-int m4_pwm = 7;
-int m4_dir = 6;
+int m4_pwm = 3;
+int m4_dir = 2;
 
 // Encoder myEnc(31, 30);
 // int m4_pwm = 5;
@@ -38,7 +38,9 @@ void drive(int pwm_val, int pwmPin, int dirPin)
 
 USBHost myusb;
 JoystickController joystick1(myusb);
-BluetoothController bluet(myusb, true, "0000");
+//BluetoothController bluet(myusb, true, "0000");
+BluetoothController bluet(myusb);   // version assumes it already was paireduint32_t buttons_prev = 0;
+
 uint32_t buttons_prev = 0;
 uint32_t buttons;
 
@@ -107,10 +109,37 @@ myusb.Task();
 
     buttons = joystick1.getButtons();
 
-        int left_y = psAxis[1] - 128;
-            int y = map(left_y, -128, 128,max_pwm, -max_pwm);
+    int psAxisX=0;
+int psAxisY=0;
+int w= 0;
+if(psAxis[0]<125)
+         psAxisX=map(psAxis[0],125,0,0,255);
+      
+      else if(psAxis[0]>135)
+        psAxisX=map(psAxis[0],135,255,0,-255);
+      else
+         psAxisX=0;
+      
+      if(psAxis[1]>135)
+        psAxisY=map(psAxis[1],135,255,0,-255);
+      
+      else if(psAxis[1]<125)
+         psAxisY=map(psAxis[1],125,0,0,255);
+      else
+         psAxisY=0;
+      if(psAxis[2]>135)
+        w=map(psAxis[2],135,255,0,-255);
+      
+      else if(psAxis[2]<125)
+         w=map(psAxis[2],125,0,0,255);
+      else
+         w=0;
+    int y = psAxisY;
+    int x= psAxisX;
+
+            //int y = map(left_y, -128, 128,max_pwm, -max_pwm);
             Serial.printf(" PWM:  %d\n",y);
-          drive(y, m4_pwm, m4_dir);
+          drive(y*64, m4_pwm, m4_dir);
 
   }
 }

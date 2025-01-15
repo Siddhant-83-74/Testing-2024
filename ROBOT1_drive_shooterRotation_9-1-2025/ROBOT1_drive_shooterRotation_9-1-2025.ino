@@ -6,8 +6,8 @@ IntervalTimer pid_timer;
 IntervalTimer pos_pid_timer;
 
 
-int pwm_pin[3] = { 3, 5, 7};
-int dir_pin[3] = { 2, 4, 6};
+int pwm_pin[3] = { 3, 7, 5};
+int dir_pin[3] = { 2, 6, 4};
 
 
 Encoder m[3] = { Encoder(28, 27), Encoder(31, 30), Encoder(12, 11) };
@@ -43,8 +43,8 @@ int max_rpm = 200;//hello.....
 
 USBHost myusb;
 JoystickController joystick1(myusb);
-BluetoothController bluet(myusb ,true, "0000");
-uint32_t buttons_prev = 0;
+// BluetoothController bluet(myusb, true, "0000");   // Version does pairing to device
+BluetoothController bluet(myusb);   // version assumes it already was paireduint32_t buttons_prev = 0;
 uint32_t buttons;
 
 int psAxis[64];
@@ -138,10 +138,10 @@ speed_m=kP*err+kI*integ+kD*der;
 
 // Serial.printf("speed: %f   ",speed_m);
 // Serial.printf("Kp: %f.   Ki: %f.    Kd: %f   ",kp,ki,kd);
-Serial.print("Sp:");
-Serial.print(shooting_angle);
-Serial.print("     Ap:");
-Serial.println(int((ap*360.0/shooter_rotation_cpr)/6.25));
+// Serial.print("Sp:");
+// Serial.print(shooting_angle);
+// Serial.print("     Ap:");
+// Serial.println(int((ap*360.0/shooter_rotation_cpr)/6.25));
       // Serial.println(enc1.read());
 setPosition(int(speed_m));
 
@@ -155,7 +155,7 @@ void calc_rpm() {
     rpm_rt[i] = count[i] / 1300.0 * 600 * 4 / 3;
     rpm_rt[i] *= newPosition[i] < oldPosition[i] ? -1 : 1;
 
-   // Serial.printf("RPM_output(motor: %d):%0.2f ",i+1, rpm_rt[i]);
+   Serial.printf("RPM_output(motor: %d):%0.2f ",i+1, rpm_rt[i]);
     count[i] = 0;
     oldPosition[i] = newPosition[i];
   }
@@ -178,9 +178,35 @@ void ps4_input() {
          s3=int(-0.5045*x+0.8725*y)
 
 */
-    int y = psAxis[1] - 128;
-    int x= (psAxis[0] - 128);
-    int w= psAxis[2]-128;
+int psAxisX=0;
+int psAxisY=0;
+int w= 0;
+if(psAxis[0]<125)
+         psAxisX=map(psAxis[0],125,0,0,-255);
+      
+      else if(psAxis[0]>135)
+        psAxisX=map(psAxis[0],135,255,0,255);
+      else
+         psAxisX=0;
+      
+      if(psAxis[1]>135)
+        psAxisY=map(psAxis[1],135,255,0,255);
+      
+      else if(psAxis[1]<125)
+         psAxisY=map(psAxis[1],125,0,0,-255);
+      else
+         psAxisY=0;
+      if(psAxis[2]>135)
+        w=map(psAxis[2],135,255,0,255);
+      
+      else if(psAxis[2]<125)
+         w=map(psAxis[2],125,0,0,-255);
+      else
+         w=0;
+    int y = psAxisY;
+    int x= psAxisX;
+
+    
     rpm_sp[0] = map(x+w,-175,175,max_rpm,-max_rpm);
     rpm_sp[1] = map(-0.5*x-0.866*y+w,-175,175,max_rpm,-max_rpm);
     rpm_sp[2] = map(-0.5*x+0.866*y+w,-175,175,max_rpm,-max_rpm);
